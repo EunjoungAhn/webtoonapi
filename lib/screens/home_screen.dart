@@ -29,7 +29,7 @@ class HomeScreen extends StatelessWidget {
             return Column(
               children: [
                 const SizedBox(
-                  height: 50,
+                  height: 5,
                 ),
                 Expanded(child: makeList(snapshot)),
               ],
@@ -47,15 +47,40 @@ class HomeScreen extends StatelessWidget {
     return ListView.separated(
       scrollDirection: Axis.horizontal,
       itemCount: snapshot.data!.length, // WebtoonModel의 리스트
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       //ListView.builder는 index를 10개 까지만 만들고 재활용 하면서 스크롤 이동시 다시 호출한다.
       itemBuilder: (context, index) {
         print(index);
         var webtoon = snapshot.data![index];
-        return Text(webtoon.title);
+        return Column(
+          children: [
+            Container(
+              width: 250,
+              // clipBehavior 자식의 부모 영역 침범을 제어하는 방법
+              clipBehavior: Clip.hardEdge,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                        blurRadius: 15,
+                        offset: const Offset(10, 10), //  그림자의 위치
+                        color: Colors.black.withOpacity(0.5))
+                  ]),
+              child: Image.network(webtoon.thumb),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+              webtoon.title,
+              style: const TextStyle(fontSize: 22),
+            ),
+          ],
+        );
       },
       // 각 widget의 리스트 아이템 사이에 렌더가 된다.
       separatorBuilder: (context, index) => const SizedBox(
-        width: 20,
+        width: 30,
       ),
     );
   }
