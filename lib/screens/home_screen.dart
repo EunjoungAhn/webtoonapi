@@ -26,21 +26,36 @@ class HomeScreen extends StatelessWidget {
           //snapshot을 통해서 변화를 알려줄 것이다.
           if (snapshot.hasData) {
             // ListVie가 최적화 된 것이다.
-            return ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: snapshot.data!.length, // WebtoonModel의 리스트
-              //ListView.builder는 index를 10개 까지만 만들고 재활용 하면서 스크롤 이동시 다시 호출한다.
-              itemBuilder: (context, index) {
-                print(index);
-                var webtoon = snapshot.data![index];
-                return Text(webtoon.title);
-              },
+            return Column(
+              children: [
+                const SizedBox(
+                  height: 50,
+                ),
+                Expanded(child: makeList(snapshot)),
+              ],
             );
           }
           return const Center(
             child: CircularProgressIndicator(), // 둥근 로딩처리
           );
         },
+      ),
+    );
+  }
+
+  ListView makeList(AsyncSnapshot<List<WebtoonModel>> snapshot) {
+    return ListView.separated(
+      scrollDirection: Axis.horizontal,
+      itemCount: snapshot.data!.length, // WebtoonModel의 리스트
+      //ListView.builder는 index를 10개 까지만 만들고 재활용 하면서 스크롤 이동시 다시 호출한다.
+      itemBuilder: (context, index) {
+        print(index);
+        var webtoon = snapshot.data![index];
+        return Text(webtoon.title);
+      },
+      // 각 widget의 리스트 아이템 사이에 렌더가 된다.
+      separatorBuilder: (context, index) => const SizedBox(
+        width: 20,
       ),
     );
   }
