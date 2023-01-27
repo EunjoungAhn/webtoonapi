@@ -13,14 +13,16 @@ class Webtoon extends StatelessWidget {
       onTap: () {
         // builder는 route을 만드는 함수이다.
         Navigator.push(
-            // Navigator로 새 route를 push하고
-            context,
-            MaterialPageRoute(
-              // route는 MaterialPageRoute로 만들었고,
-              builder: (context) =>
-                  // MaterialPageRoute는 StatlessWidget을 route로 감싸서 렌더한다.
-                  DetailScreen(title: title, thumb: thumb, id: id),
-            ));
+          // Navigator로 새 route를 push하고
+          context,
+          MaterialPageRoute(
+            // route는 MaterialPageRoute로 만들었고,
+            builder: (context) =>
+                // MaterialPageRoute는 StatlessWidget을 route로 감싸서 렌더한다.
+                DetailScreen(title: title, thumb: thumb, id: id),
+            fullscreenDialog: true,
+          ),
+        );
       },
       child: Column(
         children: [
