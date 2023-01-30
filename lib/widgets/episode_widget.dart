@@ -6,8 +6,10 @@ class Episode extends StatelessWidget {
   const Episode({
     Key? key,
     required this.episode,
+    required this.webtoon_id,
   }) : super(key: key);
 
+  final String webtoon_id;
   final WebtoonEpisodeModel episode;
 
   onButtonTap() async {
@@ -16,7 +18,8 @@ class Episode extends StatelessWidget {
   await launchUrl(url);
   아래와 기능은 같다.
   */
-    await launchUrlString("https://google.com");
+    await launchUrlString(
+        "https://comic.naver.com/webtoon/detail?titleId=$webtoon_id&no=${episode.id}&weekday=mon");
   }
 
   @override

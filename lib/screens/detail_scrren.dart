@@ -111,7 +111,10 @@ class _DetailScreenState extends State<DetailScreen> {
                       children: [
                         // collection for은 list안에 list를 빌드할 수 있게 해준다.
                         for (var episode in snapshot.data!)
-                          Episode(episode: episode),
+                          Episode(
+                            episode: episode,
+                            webtoon_id: widget.id,
+                          ),
                       ],
                     );
                   }
