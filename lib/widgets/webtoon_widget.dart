@@ -27,6 +27,7 @@ class Webtoon extends StatelessWidget {
       child: Column(
         children: [
           Hero(
+            //Hero - 두 화면 사이의 애니메이션을 주는 위젯
             tag: id,
             child: Container(
               width: 250,
