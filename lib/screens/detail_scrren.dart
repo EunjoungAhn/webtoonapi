@@ -46,30 +46,62 @@ class _DetailScreenState extends State<DetailScreen> {
           style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
         ),
       ),
-      body: Column(children: [
-        const SizedBox(
-          height: 50,
-        ),
-        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Hero(
-            tag: widget.id,
-            child: Container(
-              width: 250,
-              // clipBehavior 자식의 부모 영역 침범을 제어하는 방법
-              clipBehavior: Clip.hardEdge,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  boxShadow: [
-                    BoxShadow(
-                        blurRadius: 15,
-                        offset: const Offset(10, 10), //  그림자의 위치
-                        color: Colors.black.withOpacity(0.5))
-                  ]),
-              child: Image.network(widget.thumb),
-            ),
+      body: Column(
+        children: [
+          const SizedBox(
+            height: 50,
           ),
-        ]),
-      ]),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Hero(
+              tag: widget.id,
+              child: Container(
+                width: 250,
+                // clipBehavior 자식의 부모 영역 침범을 제어하는 방법
+                clipBehavior: Clip.hardEdge,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: [
+                      BoxShadow(
+                          blurRadius: 15,
+                          offset: const Offset(10, 10), //  그림자의 위치
+                          color: Colors.black.withOpacity(0.5))
+                    ]),
+                child: Image.network(widget.thumb),
+              ),
+            ),
+          ]),
+          const SizedBox(
+            height: 25,
+          ),
+          FutureBuilder(
+            future: webtoon,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 50),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        snapshot.data!.about,
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      Text(
+                        '${snapshot.data!.genre} / ${snapshot.data!.age}',
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                    ],
+                  ),
+                );
+              }
+              return const Text("...");
+            },
+          )
+        ],
+      ),
     );
   }
 }
