@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:webtoonapi/models/webtoon_detail_model.dart';
+import 'package:webtoonapi/models/webtoon_episode_model.dart';
 import 'package:webtoonapi/services/api_service.dart';
 
 class DetailScreen extends StatefulWidget {
@@ -20,12 +21,16 @@ class DetailScreen extends StatefulWidget {
   이것이 State가 속한 StatefulWidget이 데이터를 받아오는 방법이다.
 */
 class _DetailScreenState extends State<DetailScreen> {
+  // 초기화하고 싶은 property가 있지만, contructor에서 불가능 할때
   late Future<WebtoonDetailModel> webtoon;
+  late Future<List<WebtoonEpisodeModel>> episodes;
 
   @override
   void initState() {
     super.initState();
+    // initState 함수에서 처리하면 된다. 왜냐면 build 함수 보다 먼저 실행되고, 한번만 실행되기 때문이다.
     webtoon = ApiService.getTonnById(widget.id);
+    episodes = ApiService.getLatestEpisodesById(widget.id);
   }
 
   @override
