@@ -51,7 +51,7 @@ class HomeScreen extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       //ListView.builder는 index를 10개 까지만 만들고 재활용 하면서 스크롤 이동시 다시 호출한다.
       itemBuilder: (context, index) {
-        print(index);
+        //print(index);
         var webtoon = snapshot.data![index];
         return Webtoon(
             title: webtoon.title, thumb: webtoon.thumb, id: webtoon.id);
