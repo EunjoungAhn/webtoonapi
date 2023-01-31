@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webtoonapi/models/webtoon_detail_model.dart';
 import 'package:webtoonapi/models/webtoon_episode_model.dart';
 import 'package:webtoonapi/services/api_service.dart';
@@ -25,6 +26,24 @@ class _DetailScreenState extends State<DetailScreen> {
   // 초기화하고 싶은 property가 있지만, contructor에서 불가능 할때
   late Future<WebtoonDetailModel> webtoon;
   late Future<List<WebtoonEpisodeModel>> episodes;
+  // 핸드폰 저장소를 만들기
+  late SharedPreferences prefs;
+  bool isLiked = false;
+
+  Future initPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+    final likedToons = prefs.getStringList('likedToons');
+    if (likedToons != null) {
+      // 웝툰의 아이디를 가지고 있는지 확인
+      if (likedToons.contains(widget.id) == true) {
+        setState(() {
+          isLiked = true;
+        });
+      }
+    } else {
+      await prefs.setStringList('likedToons', []);
+    }
+  }
 
   @override
   void initState() {
@@ -32,6 +51,23 @@ class _DetailScreenState extends State<DetailScreen> {
     // initState 함수에서 처리하면 된다. 왜냐면 build 함수 보다 먼저 실행되고, 한번만 실행되기 때문이다.
     webtoon = ApiService.getTonnById(widget.id);
     episodes = ApiService.getLatestEpisodesById(widget.id);
+    initPrefs();
+  }
+
+  onHeartTap() async {
+    final likedToons = prefs.getStringList('likedToons'); // 리스트 가져오기
+    if (likedToons != null) {
+      if (isLiked) {
+        likedToons.remove(widget.id);
+      } else {
+        likedToons.add(widget.id);
+      }
+      await prefs.setStringList('likedToons', likedToons); // 핸드폰 저장소에 list 저장하기
+      setState(() {
+        // 반대값을 부여한다
+        isLiked = !isLiked;
+      });
+    }
   }
 
   @override
@@ -44,9 +80,11 @@ class _DetailScreenState extends State<DetailScreen> {
         backgroundColor: Colors.white,
         actions: [
           IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.favorite_outline,
+              onPressed: () {
+                onHeartTap();
+              },
+              icon: Icon(
+                isLiked ? Icons.favorite : Icons.favorite_outline,
               ))
         ],
         title: Text(
